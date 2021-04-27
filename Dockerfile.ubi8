@@ -1,0 +1,8 @@
+FROM registry.access.redhat.com/ubi8:latest
+RUN dnf install golang git -y
+WORKDIR /go/src/github.com/mvazquezc/gocoredump/
+COPY main.go .
+COPY run.sh .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o coredump .
+ENV GOTRACEBACK=crash
+CMD ["./run.sh"]
